@@ -1,7 +1,8 @@
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-
+    private final int TOP;
+    private final int BOTTOM;
     private final int gridDimension;
     private final boolean[][] grid;
     private final WeightedQuickUnionUF union;
@@ -14,6 +15,8 @@ public class Percolation {
         gridDimension = n;
         grid = new boolean[n][n];
         openSites = 0;
+        TOP = 1;
+        BOTTOM = n * n + 1;
         union = new WeightedQuickUnionUF(n * n + 2);
     }
 
@@ -23,9 +26,9 @@ public class Percolation {
             int currentCell = pointsToSingleInteger(row, col);
 
             if (row == 1) {
-                union.union(0, currentCell);
+                union.union(currentCell, TOP);
             } else if (row == gridDimension) {
-                union.union(gridDimension+2, currentCell);
+                union.union(currentCell, BOTTOM);
             }
 
             addSurroundingCells(row, col);
@@ -74,7 +77,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return union.connected(0, gridDimension+2);
+        return union.connected(TOP,  BOTTOM);
     }
 
     private int pointsToSingleInteger(int x, int y) {
