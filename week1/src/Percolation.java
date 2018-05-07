@@ -6,7 +6,7 @@ public class Percolation {
 
     private final int gridDimension;
     private final boolean[][] grid;
-    private WeightedQuickUnionUF union;
+    private final WeightedQuickUnionUF union;
     private int openSites;
 
     public Percolation(int n) {
@@ -30,10 +30,8 @@ public class Percolation {
                 union.union(gridDimension+2, currentCell);
             }
 
-            for (Cell cell : getSurroundingCells(row, col)) {
-                int surroundingCell = pointsToSingleInteger(cell.getRow(), cell.getCol());
-                union.union(currentCell, surroundingCell);
-            }
+            addSurroundingCells(row, col);
+
             openSites++;
         }
     }
@@ -50,44 +48,27 @@ public class Percolation {
         return false;
     }
 
-    private List<Cell> getSurroundingCells(int row, int col) {
-        List<Cell> surroundingCells = new ArrayList<>();
+    private void addSurroundingCells(int row, int col) {
+        final int currentCell = pointsToSingleInteger(row, col);
         if (isOpen(row + 1, col)) {
-            Cell cell = new Cell(row + 1, col);
-            surroundingCells.add(cell);
+            int surroundingCell = pointsToSingleInteger(row + 1, col);
+            union.union(currentCell, surroundingCell);
         }
 
         if (isOpen(row - 1, col)) {
-            Cell cell = new Cell(row - 1, col);
-            surroundingCells.add(cell);
+            int surroundingCell = pointsToSingleInteger(row - 1, col);
+            union.union(currentCell, surroundingCell);
         }
 
         if (isOpen(row, col + 1)) {
-            Cell cell = new Cell(row, col + 1);
-            surroundingCells.add(cell);
+            int surroundingCell = pointsToSingleInteger(row, col + 1);
+            union.union(currentCell, surroundingCell);
         }
 
         if (isOpen(row, col - 1)) {
-            Cell cell = new Cell(row, col - 1);
-            surroundingCells.add(cell);
+            int surroundingCell = pointsToSingleInteger(row, col - 1);
+            union.union(currentCell, surroundingCell);
         }
-
-        return surroundingCells;
-    }
-
-
-    private static class Cell {
-        private final int row;
-        private final int col;
-
-        Cell(int row, int col) {
-            this.row  = row;
-            this.col = col;
-        }
-
-        int getRow() { return row; }
-        int getCol() { return col; }
-
     }
 
     public int numberOfOpenSites()  {
