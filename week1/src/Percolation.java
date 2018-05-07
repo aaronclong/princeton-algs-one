@@ -88,5 +88,4 @@ public class Percolation {
         return ((row > 0 && column > 0 ) && (gridDimension >= row && column <= gridDimension));
     }
 
-    public static void main(String[] args){}   // test client (optional)
 }
