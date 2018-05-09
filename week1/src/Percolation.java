@@ -36,18 +36,21 @@ public class Percolation {
             addSurroundingCells(row, col);
 
             openSites++;
-        }
+        } else if (!isInRange(row, col)) throw new IllegalArgumentException();
     }
 
     public boolean isOpen(int row, int col) {
-        return isInRange(row, col) && grid[row - 1][col - 1];
+        if (!isInRange(row, col)) {
+            throw new IllegalArgumentException();
+        }
+        return grid[row - 1][col - 1];
     }
 
     public boolean isFull(int row, int col) {
         if (isOpen(row, col)) {
             int cellAsSinglePoint = pointsToSingleInteger(row, col);
             return union.connected(TOP, cellAsSinglePoint);
-        }
+        } else if (!isInRange(row, col)) throw new IllegalArgumentException();
         return false;
     }
 
