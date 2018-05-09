@@ -56,22 +56,22 @@ public class Percolation {
 
     private void addSurroundingCells(int row, int col) {
         final int currentCell = pointsToSingleInteger(row, col);
-        if (isOpen(row + 1, col)) {
+        if (isInRange(row + 1, col) && isOpen(row + 1, col)) {
             int surroundingCell = pointsToSingleInteger(row + 1, col);
             union.union(currentCell, surroundingCell);
         }
 
-        if (isOpen(row - 1, col)) {
+        if (isInRange(row - 1, col) && isOpen(row - 1, col)) {
             int surroundingCell = pointsToSingleInteger(row - 1, col);
             union.union(currentCell, surroundingCell);
         }
 
-        if (isOpen(row, col + 1)) {
+        if (isInRange(row, col + 1) && isOpen(row, col + 1)) {
             int surroundingCell = pointsToSingleInteger(row, col + 1);
             union.union(currentCell, surroundingCell);
         }
 
-        if (isOpen(row, col - 1)) {
+        if (isInRange(row, col - 1) && isOpen(row, col - 1)) {
             int surroundingCell = pointsToSingleInteger(row, col - 1);
             union.union(currentCell, surroundingCell);
         }
