@@ -42,9 +42,9 @@ public class Percolation {
     }
 
     public boolean isFull(int row, int col) {
-        if (isInRange(row, col)) {
+        if (isOpen(row, col)) {
             int cellAsSinglePoint = pointsToSingleInteger(row, col);
-            return union.connected(0, cellAsSinglePoint);
+            return union.connected(TOP, cellAsSinglePoint);
         }
         return false;
     }
@@ -81,7 +81,7 @@ public class Percolation {
     }
 
     private int pointsToSingleInteger(int x, int y) {
-        return ((x -1) * gridDimension) + y;
+        return (gridDimension * (x -1)) + y;
     }
 
     private boolean isInRange(int row, int column) {
