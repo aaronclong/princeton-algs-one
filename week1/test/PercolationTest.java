@@ -8,7 +8,7 @@ public class PercolationTest {
         new Percolation(-1);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void columnRowOutOfRangeNotOpen() {
         Percolation percolation = new Percolation(5);
         percolation.open(6, 6);
