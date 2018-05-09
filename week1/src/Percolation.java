@@ -27,7 +27,9 @@ public class Percolation {
 
             if (row == 1) {
                 union.union(currentCell, TOP);
-            } else if (row == gridDimension) {
+            }
+
+            if (row == gridDimension) {
                 union.union(currentCell, BOTTOM);
             }
 
