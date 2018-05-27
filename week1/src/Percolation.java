@@ -6,6 +6,7 @@ public class Percolation {
     private final int gridDimension;
     private final boolean[][] grid;
     private final WeightedQuickUnionUF union;
+    private final WeightedQuickUnionUF backwash;
     private int openSites;
 
     public Percolation(int n) {
@@ -18,6 +19,7 @@ public class Percolation {
         TOP = 1;
         BOTTOM = n * n + 1;
         union = new WeightedQuickUnionUF(n * n + 2);
+        backwash = new WeightedQuickUnionUF(n * n + 2);
     }
 
     public void open(int row, int col) {
@@ -26,7 +28,8 @@ public class Percolation {
             int currentCell = pointsToSingleInteger(row, col);
 
             if (row == 1) {
-                union.union(currentCell, TOP);
+                union.union(TOP, currentCell);
+                backwash.union(TOP, currentCell);
             }
 
             if (row == gridDimension) {
@@ -49,7 +52,7 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         if (isOpen(row, col)) {
             int cellAsSinglePoint = pointsToSingleInteger(row, col);
-            return union.connected(TOP, cellAsSinglePoint);
+            return backwash.connected(TOP, cellAsSinglePoint);
         } else if (!isInRange(row, col)) throw new IllegalArgumentException();
         return false;
     }
@@ -59,21 +62,25 @@ public class Percolation {
         if (isInRange(row + 1, col) && isOpen(row + 1, col)) {
             int surroundingCell = pointsToSingleInteger(row + 1, col);
             union.union(currentCell, surroundingCell);
+            backwash.union(currentCell, surroundingCell);
         }
 
         if (isInRange(row - 1, col) && isOpen(row - 1, col)) {
             int surroundingCell = pointsToSingleInteger(row - 1, col);
             union.union(currentCell, surroundingCell);
+            backwash.union(currentCell, surroundingCell);
         }
 
         if (isInRange(row, col + 1) && isOpen(row, col + 1)) {
             int surroundingCell = pointsToSingleInteger(row, col + 1);
             union.union(currentCell, surroundingCell);
+            backwash.union(currentCell, surroundingCell);
         }
 
         if (isInRange(row, col - 1) && isOpen(row, col - 1)) {
             int surroundingCell = pointsToSingleInteger(row, col - 1);
             union.union(currentCell, surroundingCell);
+            backwash.union(currentCell, surroundingCell);
         }
     }
 

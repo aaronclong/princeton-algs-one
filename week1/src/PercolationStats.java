@@ -23,23 +23,26 @@ public class PercolationStats {
     }
 
     private double runSimulation() {
-        Percolation percolation = new Percolation(numberOfTrials);
-
-        while (!percolation.percolates()) {
+        Percolation percolation = new Percolation(dimensions);
+        int count = 0;
+        while (count < dimensions || !percolation.percolates()) {
             randomlyOpenCell(percolation, dimensions);
+            count += 1;
         }
 
-        return (double) percolation.numberOfOpenSites() / (dimensions * dimensions);
+        return (double) count / (dimensions * dimensions);
     }
 
-    private static boolean randomlyOpenCell(Percolation union, int dimensions) {
-        int row = StdRandom.uniform(dimensions);
-        int col = StdRandom.uniform(dimensions);
-        if (!union.isOpen(row, col)) {
-            union.open(row, col);
-            return true;
+    private static void randomlyOpenCell(Percolation union, int dimensions) {
+        boolean isOpen = false;
+        int row = 1;
+        int col = 1;
+        while(!isOpen) {
+            row = StdRandom.uniform(1, dimensions + 1);
+            col = StdRandom.uniform(1, dimensions + 1);
+            isOpen = !union.isOpen(row, col);
         }
-        return false;
+        union.open(row, col);
     }
 
     public double mean() {
